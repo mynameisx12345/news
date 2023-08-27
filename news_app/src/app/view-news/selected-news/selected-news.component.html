@@ -1,0 +1,7 @@
+<div class="selected pt-3" fxLayout="column" fxLayoutGap="20px">
+  <div class="title">test titletest title test title test title test title test title test title test title  </div>
+  <img src="../../../assets/icons/news.png" width="70%" height="auto">
+  <div class="w-50">{{content}}</div>
+  <app-comment class="w-50" [comments]="comments"
+    (addCommentSrc)="addComment($event)"></app-comment>
+</div>

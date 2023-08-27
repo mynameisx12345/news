@@ -1,0 +1,31 @@
+<div class="header" fxLayout="column" fxLayoutGap="10px">
+  <div fxLayout="row" class="subheader" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <img src="../../../../assets/icons/popcorn.png" height="50px">
+      <div class="title">kasUbAybay</div>
+    </div>
+    
+    <div fxLayout="column" fxLayoutAlign="end end" class="h-100">
+      <div fxLayout="row" fxLayoutGap="10px">
+        <mat-icon class="white-icon">person_add</mat-icon>
+        <mat-icon class="white-icon">notifications</mat-icon>
+        <mat-icon class="white-icon">settings</mat-icon>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <mat-form-field appearance="outline" fxFlex="30">
+      <input matInput placeholder="Search News">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <button mat-raised-button color="accent" style="height:56px">Search</button>
+  </div>
+  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <div *ngFor="let section of sections" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+      <img [src]="'../../../../assets/icons/' + section.icon" height="21px" width="auto">
+      <span class="section-title">{{section.title}}</span>
+    </div>
+  </div>
+</div>

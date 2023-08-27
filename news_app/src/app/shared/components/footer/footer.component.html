@@ -1,0 +1,22 @@
+<div class="footer">
+  <div fxLayout="row" fxLayoutAlign="center center" >
+    <div fxLayout="row" fxFlex="70" fxLayoutAlign="center center" fxLayoutGap="30px"> 
+      <div class="app-desc" fxFlex="30">
+        {{appDesc}}
+      </div>
+      <div fxFlex="30">
+        <div class="sub-text-title">
+          About the developers:
+        </div>
+        <div *ngFor="let developer of developers" class="sub-text">
+          {{developer}}
+        </div>
+        
+      </div>
+      <div fxFlex="10">
+        <img src="../../../../assets/images/ua-logo.png" height="100px">
+      </div>
+    </div>
+    
+  </div>
+</div>

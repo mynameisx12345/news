@@ -1,0 +1,14 @@
+<div fxLayout="row" class="top-stories pt-3" fxLayoutGap="20px">
+  <div fxFlex="65" fxLayout="column" class="top-most" fxLayoutGap="20px">
+    <div class="title" (click)="openNews()">{{mainStories[0].title}}</div>
+    <img src="../../../assets/icons/news.png" width="100%" height="auto" (click)="openNews()">
+    <div>{{mainStories[0].description}}</div>
+  </div>
+  <div fxFlex="35" fxLayoutGap="20px" class="top-old">
+    <div fxLayout="column" *ngFor="let mainStory of mainStories | slice: 1">
+      <div class="sub-title" (click)="openNews()">{{mainStory.title}}</div>
+      <img src="../../../assets/icons/news.png" width="100%" height="auto" (click)="openNews()">
+      <div>{{mainStory.description}}</div>
+    </div>
+  </div>
+</div>

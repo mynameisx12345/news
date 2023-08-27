@@ -1,0 +1,11 @@
+<div fxLayout="column" class="news-list">
+  <div class="header">JUST IN</div>
+  <div fxLayout="column" fxLayoutGap="1px">
+    <div *ngFor="let item of news" class="item">
+      {{item.title}}
+    </div>
+  </div>
+  <div class="ms-2">
+    <app-view-more></app-view-more>
+  </div>
+</div>

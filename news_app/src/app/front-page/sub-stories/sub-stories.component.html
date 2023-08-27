@@ -1,0 +1,17 @@
+<div class="sub-stories pt-3" fxLayout="column">
+
+    <div class="header">
+      TRENDING
+    </div>
+    <div fxLayout="row wrap">
+      <mat-card class="story" *ngFor="let item of news">
+        <mat-card-content fxLayout="row" class="h-100" fxLayoutGap="10px" fxLayoutAlign="start center">
+          <img src="../../../assets/icons/news.png" height="100%" width="auto">
+          <div>{{item.title}}</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+   
+    
+
+</div>
