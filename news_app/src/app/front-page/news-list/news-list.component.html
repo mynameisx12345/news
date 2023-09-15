@@ -1,7 +1,7 @@
 <div fxLayout="column" class="news-list">
   <div class="header">JUST IN</div>
   <div fxLayout="column" fxLayoutGap="1px">
-    <div *ngFor="let item of news" class="item">
+    <div *ngFor="let item of news" class="item" (click)="openNews(item.link)">
       {{item.title}}
     </div>
   </div>

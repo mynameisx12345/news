@@ -5,6 +5,7 @@ import { CustomCommonModule } from '../module/common/common.module';
 import { FooterComponent } from './footer/footer.component';
 import { ViewMoreComponent } from './view-more/view-more.component';
 import { CommentComponent } from './comment/comment.component';
+import { ReactionComponent } from './reaction/reaction.component';
 
 
 
@@ -13,7 +14,8 @@ import { CommentComponent } from './comment/comment.component';
     HeaderComponent,
     FooterComponent,
     ViewMoreComponent,
-    CommentComponent
+    CommentComponent,
+    ReactionComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { CommentComponent } from './comment/comment.component';
     HeaderComponent,
     FooterComponent,
     ViewMoreComponent,
-    CommentComponent
+    CommentComponent,
+    ReactionComponent
   ]
 })
 export class ComponentsModule { }

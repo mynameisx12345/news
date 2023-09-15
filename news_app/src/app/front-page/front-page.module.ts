@@ -8,6 +8,7 @@ import { SubStoriesComponent } from './sub-stories/sub-stories.component';
 import { NewsListComponent } from './news-list/news-list.component';
 import { ComponentsModule } from '../shared/components/components.module';
 import { ExamScheduleComponent } from './exam-schedule/exam-schedule.component';
+import { EventsComponent } from './events/events.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,8 @@ const routes: Routes = [
     TopStoriesComponent,
     SubStoriesComponent,
     NewsListComponent,
-    ExamScheduleComponent
+    ExamScheduleComponent,
+    EventsComponent
   ],
   imports: [
     CommonModule,

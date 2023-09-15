@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.sass']
 })
 export class HeaderComponent {
+  constructor(
+    private readonly router: Router
+  ){}
   sections = [
     {
       title: 'News',
-      icon: 'news.png'
+      icon: 'news.png',
+      link: '/front-page'
     },
     {
       title: 'Entertainment',
@@ -47,5 +52,13 @@ export class HeaderComponent {
       title: 'Shopping',
       icon: 'cart.png'
     }
-  ]
+  ];
+
+  goToLink(link:any){
+    this.router.navigate([`${link}`]);
+  }
+
+  goToLogin(){
+    this.router.navigate(['/auth/login'])
+  }
 }
