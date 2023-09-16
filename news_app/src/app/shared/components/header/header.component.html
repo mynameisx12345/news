@@ -8,9 +8,29 @@
       
       <div fxLayout="column" fxLayoutAlign="end end" class="h-100">
         <div fxLayout="row" fxLayoutGap="10px">
-          <mat-icon class="white-icon" (click)="goToLogin()">person_add</mat-icon>
+          <!-- <div [ngSwitch]="isLogged$ | async">
+            <mat-icon class="white-icon" (click)="goToLogin()"
+              *ngSwitchCase="false">person_add</mat-icon>
+            <span *ngSwitchCase="true">name</span>
+          </div> -->
+
+          <div fxLayout="row" fxLayoutAlign="end center">
+            <mat-icon class="white-icon" (click)="goToLogin()"
+              *ngIf="!(isLogged$ | async)">person_add</mat-icon>
+            <span *ngIf="(isLogged$ | async)" class="name">
+              {{(currentUserName$| async)}}
+            </span>
+          </div>
+          
           <mat-icon class="white-icon">notifications</mat-icon>
-          <mat-icon class="white-icon">settings</mat-icon>
+          <mat-icon class="white-icon" *ngIf="(isLogged$ | async)"
+            [matMenuTriggerFor]="settingsMenu">settings</mat-icon>
+          <mat-menu #settingsMenu="matMenu">
+            <button mat-menu-item (click)="openDashboard()">
+              <mat-icon>star</mat-icon>
+              <span>My News</span>
+            </button>
+          </mat-menu>
         </div>
         
       </div>

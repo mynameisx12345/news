@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly router: Router
   ){}
  
   ngOnInit(): void {
@@ -28,6 +30,10 @@ export class LoginComponent implements OnInit {
       firstname: 'Juan',
       middlename: 'Alas',
       lastname: 'De la Cruz'
-    })
+    });
+
+    this.userService.isLogged$.next(true);
+
+    this.router.navigate(['/front-page'])
   }
 }

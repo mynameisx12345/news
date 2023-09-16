@@ -18,8 +18,10 @@ interface User {
 export class UserService {
 
 
-  currentUser = new BehaviorSubject({});
+  private currentUser = new BehaviorSubject({});
   currentUser$ = this.currentUser.asObservable();
+
+  isLogged$ = new BehaviorSubject(false);
 
   constructor() { }
 

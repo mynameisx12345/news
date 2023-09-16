@@ -31,6 +31,9 @@ const routes: Routes = [
     CustomCommonModule,
     RouterModule.forChild(routes),
     ComponentsModule
+  ],
+  exports: [
+    SubStoriesComponent
   ]
 })
 export class FrontPageModule { }

@@ -13,7 +13,9 @@
     </mat-form-field>
     
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
-      <button mat-raised-button color="accent" [disabled]="!loginFg.valid">LOG IN</button>
+      <button mat-raised-button color="accent" 
+        [disabled]="!loginFg.valid"
+        (click)="login()">LOG IN</button>
       <button mat-button>Forgot Password</button>
     </div>
    
