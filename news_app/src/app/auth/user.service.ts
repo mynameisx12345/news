@@ -17,6 +17,9 @@ export class UserService {
 
   isLogged$ = new BehaviorSubject(false);
 
+  private currentDepartment = new BehaviorSubject(null);
+  currentDepartment$ = this.currentDepartment.asObservable();
+
   constructor(
     private readonly http: HttpClient
   ) { 
@@ -31,8 +34,17 @@ export class UserService {
     
   }
 
+  setCurrentDepartment(data){
+    this.currentDepartment.next(data);
+  }
+
   setCurrentUser(data:User | null){
     this.currentUser.next(data);
+    if(data !== null){
+      this.setCurrentDepartment(data.department);
+    }
+    
+    sessionStorage.setItem('user',JSON.stringify(data));
   }
 
   login(email:string, password:string){
@@ -40,7 +52,6 @@ export class UserService {
       email: email,
       password: password
     };
-    console.log('teng123', params)
     return this.http.post(`${this.apiUrl}/users/login`, params).pipe(
       tap((resp:any)=>{
         console.log('teng1234', resp)
@@ -53,11 +64,14 @@ export class UserService {
             middlename: user.middle_name,
             lastname: user.last_name,
             suffix: user.suffix,
-            department: user.department,
-            id: user.id
+            department: user.department_id,
+            id: user.id,
+            userType: user.user_type,
+            idNumber: user.id_number,
+            exam: user.exam
           };
           this.setCurrentUser(currentUser);
-          sessionStorage.setItem('user',JSON.stringify(currentUser));
+          
           this.isLogged$.next(true);
         } else {
 
@@ -74,12 +88,15 @@ export class UserService {
   logout(){
     sessionStorage.setItem('user', '');
     this.setCurrentUser(null);
+    this.setCurrentDepartment(null);
     this.isLogged$.next(false);
   }
 
   register(data:any){
     return this.http.post(`${this.apiUrl}/users/register`,data);
   }
+
+  
 }
 
 interface User {
@@ -90,7 +107,10 @@ interface User {
   middlename: string,
   lastname: string,
   suffix: string,
-  department: string
+  department: string,
+  userType: string,
+  idNumber: string,
+  exam: string
 }
 
 

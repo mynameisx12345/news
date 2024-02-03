@@ -2,10 +2,9 @@
   <div>
     <mat-form-field appearance="outline">
       <mat-label>Register As</mat-label>
-      <mat-select formControlName="userType">
-        <mat-option value="1">Audience</mat-option>
-        <mat-option value="2">Journalist</mat-option>
-        <mat-option value="3">Administrator</mat-option>
+      <mat-select [disabled]="true" formControlName="userType" >
+        <mat-option *ngFor="let userType of userTypes" [value]="userType.id" >{{userType.name}}</mat-option>
+
       </mat-select>
     </mat-form-field>
   </div>
@@ -51,7 +50,7 @@
     </mat-form-field>
   </div>
 
-  <div fxLayout="column" *ngIf="registerFg.get('userType').value == 2">
+  <div fxLayout="column" *ngIf="registerFg.get('userType').value == 2 && isNew">
     <span>New journalists are required to complete the required examination. Download the questionnaire, answer the questions and upload your answer on pdf file format.</span>
     <button mat-raised-button color="primary" (click)="downloadQuestionnaire()">Download Questionnaire</button>
     <mat-form-field appearance="outline" class="w-100 mt-3">

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/auth/user.service';
-import { map } from 'rxjs';
+import { map,tap, switchMap } from 'rxjs';
 import { LovService } from '../../services/lov.service';
 
 @Component({
@@ -70,14 +70,34 @@ export class HeaderComponent implements OnInit{
 
   isLogged$ = this.userService.isLogged$;
   currentUser$ = this.userService.currentUser$;
+  isAdmin = false;
+  isJournalist = false;
+  userId = '';
+
+  currentDepartment = null;
+  departments = null;
+  journalistDept = null;
 
   currentUserName$ = this.currentUser$.pipe(
+    tap((user:any)=>{
+      if(user!== null){
+        this.userId = user.id;
+        if(user.userType === '3'){
+          this.isAdmin = true
+        } else if(user.userType==='2'){
+          this.isJournalist = true;
+        }
+      }
+      
+    }),
     map((user:any)=>{
       if(user !== null){
         return `${user.firstname} ${user.middlename ? user.middlename :''} ${user.lastname} ${user.suffix ? user.suffix : ''}`;
       } else {
         return '';
       }
+
+      
      
     })
   )
@@ -92,7 +112,10 @@ export class HeaderComponent implements OnInit{
 
   ngOnInit(): void {
     this.setLovs();
+
+    
   }
+
 
   openDashboard(){
     this.router.navigate(['/section/dashboard'])
@@ -104,6 +127,35 @@ export class HeaderComponent implements OnInit{
   }
 
   setLovs(){
-    this.lovService.getDepartments().subscribe();
+    this.lovService.getDepartments().pipe(
+      tap((departments)=>{
+        this.departments = departments
+
+      }),
+      switchMap((departments)=>{
+        return this.userService.currentDepartment$.pipe(
+          tap((curDept)=>{
+            this.currentDepartment = this.departments.find(dept=>dept.id === curDept)?.name;
+            this.journalistDept = this.departments.filter((dept)=>{
+              return dept.id === curDept || dept.name === "SEA BREEZE"
+            })
+          })
+        )
+      })
+    ).subscribe();
   }
+
+  openUserList(){
+    this.router.navigate(['/admin/user-list']);
+  }
+
+  openProfile(){
+    this.router.navigateByUrl(`/auth/register?id=${this.userId}`);
+  }
+
+  switchDepartment(dept){
+    this.currentDepartment = dept.name;
+  }
+
+
 }

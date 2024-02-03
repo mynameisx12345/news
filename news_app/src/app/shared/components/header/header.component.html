@@ -13,27 +13,69 @@
               *ngSwitchCase="false">person_add</mat-icon>
             <span *ngSwitchCase="true">name</span>
           </div> -->
-
-          <div fxLayout="row" fxLayoutAlign="end center">
-            <mat-icon class="white-icon" (click)="goToLogin()"
-              *ngIf="!(isLogged$ | async)">login</mat-icon>
-            <span *ngIf="(isLogged$ | async)" class="name">
-              {{(currentUserName$| async)}}
-            </span>
+          <div fxLayout="column" fxLayoutGap="10px">
+            <div fxLayout="row"class="department" fxLayoutAlign="end center" fxLayoutGap="10px">
+             <mat-icon>group</mat-icon> 
+             <span>{{currentDepartment}}</span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+              <mat-icon class="white-icon" (click)="goToLogin()"
+                *ngIf="!(isLogged$ | async)">login</mat-icon>
+              <span *ngIf="(isLogged$ | async)" class="name">
+                {{(currentUserName$| async)}}
+              </span>
+              <mat-icon class="white-icon" *ngIf="(isLogged$ | async)"
+              [matMenuTriggerFor]="settingsMenu">account_circle</mat-icon>
+            </div>
           </div>
           
-          <mat-icon class="white-icon">notifications</mat-icon>
-          <mat-icon class="white-icon" *ngIf="(isLogged$ | async)"
-            [matMenuTriggerFor]="settingsMenu">settings</mat-icon>
+          
+          <!-- <mat-icon class="white-icon">notifications</mat-icon> -->
+         
           <mat-menu #settingsMenu="matMenu">
-            <button mat-menu-item (click)="openDashboard()">
+            <button mat-menu-item (click)="openProfile()">
+              <mat-icon>person</mat-icon>
+              <span>Profile</span>
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="department" *ngIf="isJournalist || isAdmin">
+              <mat-icon>switch_access_shortcut</mat-icon>
+              <span>Switch Department</span>
+            </button>
+            <button mat-menu-item (click)="openDashboard()" *ngIf="isJournalist">
               <mat-icon>star</mat-icon>
               <span>My News</span>
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="admin" *ngIf="isAdmin">
+              <mat-icon>admin_panel_settings</mat-icon>
+              <span>Admin Settings</span>
             </button>
             <button mat-menu-item (click)="logout()">
               <mat-icon>logout</mat-icon>
               <span>Log Out</span>
             </button>
+          </mat-menu>
+
+          <mat-menu #admin="matMenu">
+            <button mat-menu-item (click)="openUserList()">
+              <mat-icon>manage_accounts</mat-icon>
+              <span>Users</span>
+            </button>
+          </mat-menu>
+
+          <mat-menu #department="matMenu">
+            <div *ngIf="isAdmin">
+              <button mat-menu-item *ngFor="let dept of departments" (click)="switchDepartment(dept)">
+                <mat-icon>group</mat-icon>
+                <span>{{dept.name}}</span>
+              </button>
+            </div>
+            <div *ngIf="isJournalist">
+              <button mat-menu-item *ngFor="let dept of journalistDept" (click)="switchDepartment(dept)">
+                <mat-icon>group</mat-icon>
+                <span>{{dept.name}}</span>
+              </button>
+            </div>
+            
           </mat-menu>
           
         </div>
@@ -51,9 +93,9 @@
     <button mat-raised-button color="accent" style="height:56px">Search</button>
   </div>
   <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="center center">
-    <div *ngFor="let section of sections" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" (click)="goToLink(section.link)">
+    <!-- <div *ngFor="let section of sections" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" (click)="goToLink(section.link)">
       <img [src]="'../../../../assets/icons/' + section.icon" height="21px" width="auto" >
       <span class="section-title">{{section.title}}</span>
-    </div>
+    </div> -->
   </div>
 </div>

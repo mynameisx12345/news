@@ -15,12 +15,18 @@ class UsersController extends BaseController
     $password = $this->request->getJSON()->password;
     
     $result = $model->login($email, $password);
-  
+   
+    foreach($result as $key=>$res){
+      $result[$key]->exam = base64_encode($result[$key]->exam);
+    }
+    
     if(count($result)>0){
+  
       return $this->response
         ->setStatusCode(200)
         ->setJson($result);
     } else {
+
       return $this->response 
         ->setStatusCode(500)
         ->setBody('Access Denied');
@@ -56,7 +62,17 @@ class UsersController extends BaseController
     $model = new UsersModel($db);
 
     //$data = $this->request->getJSON();
+    $file = $this->request->getFile('exam');
+    if($file !== null){
+      $file = file_get_contents($file);
+    }
 
+    $isNew = true;
+   
+
+    if($this->request->getPost('id') != ''){
+      $isNew = false;
+    }
     $data = [
       'email' => $this->request->getPost('email'),
       'password' => $this->request->getPost('password'),
@@ -68,8 +84,13 @@ class UsersController extends BaseController
       'suffix' => $this->request->getPost('suffix'),
       'department_id' => $this->request->getPost('department_id'),
       'id_number' => $this->request->getPost('id_number'),
-      'exam' => $this->request->getFile('exam')
+      'exam' => $file,
+      'id' => $this->request->getPost('id')
     ];
+
+
+
+    
   
   
     $userId = $model->register($data);
@@ -80,8 +101,21 @@ class UsersController extends BaseController
     }
 
     return $this->response 
-    ->setStatusCode(200)
-    ->setJson(['userId'=>$userId, 'message'=>'Success']);
+      ->setStatusCode(200)
+      ->setJson(['userId'=>$userId, 'message'=>'Success', 'isNew'=> $isNew]);
    
+  }
+
+  public function getUserList(){
+    $db = db_connect();
+    $model = new UsersModel($db);
+
+    $result = $model->getUserList();
+    foreach($result as $key=>$res){
+      $result[$key]->exam = base64_encode($result[$key]->exam);
+    }
+    return $this->response
+      ->setStatusCode(200)
+      ->setJson($result);
   }
 }

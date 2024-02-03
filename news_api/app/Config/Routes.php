@@ -10,6 +10,7 @@ $routes->get('/', 'Home::index');
 $routes->group('users', function($routes){
   $routes->post('login','UsersController::login');
   $routes->post('register','UsersController::register');
+  $routes->get('list','UsersController::getUserList');
 });
 
 $routes->group('lov', function($routes){

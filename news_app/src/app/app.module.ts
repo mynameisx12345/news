@@ -7,6 +7,7 @@ import { ComponentsModule } from './shared/components/components.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CustomCommonModule } from './shared/module/common/common.module';
 import { ServicesModule } from './shared/services/services.module';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ServicesModule } from './shared/services/services.module';
     ComponentsModule,
     BrowserAnimationsModule,
     CustomCommonModule,
-    ServicesModule
+    ServicesModule,
+    AdminModule
   ],
   providers: [],
   bootstrap: [AppComponent]
