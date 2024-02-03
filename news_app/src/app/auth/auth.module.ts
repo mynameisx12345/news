@@ -4,17 +4,23 @@ import { LoginComponent } from './login/login.component';
 import { CustomCommonModule } from '../shared/module/common/common.module';
 import { ComponentsModule } from '../shared/components/components.module';
 import { RouterModule, Routes } from '@angular/router';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes= [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   }
 ]
 
 @NgModule({
   declarations: [
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,

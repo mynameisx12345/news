@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/auth/user.service';
 import { map } from 'rxjs';
+import { LovService } from '../../services/lov.service';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,8 @@ import { map } from 'rxjs';
 export class HeaderComponent implements OnInit{
   constructor(
     private readonly router: Router,
-    public userService: UserService
+    public userService: UserService,
+    public lovService: LovService
   ){}
   sections = [
     {
@@ -71,7 +73,12 @@ export class HeaderComponent implements OnInit{
 
   currentUserName$ = this.currentUser$.pipe(
     map((user:any)=>{
-      return `${user.firstname} ${user.middlename} ${user.lastname}`;
+      if(user !== null){
+        return `${user.firstname} ${user.middlename ? user.middlename :''} ${user.lastname} ${user.suffix ? user.suffix : ''}`;
+      } else {
+        return '';
+      }
+     
     })
   )
 
@@ -84,10 +91,19 @@ export class HeaderComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    
+    this.setLovs();
   }
 
   openDashboard(){
     this.router.navigate(['/section/dashboard'])
+  }
+
+  logout(){
+    this.userService.logout();
+    this.router.navigate(['/front-page']);
+  }
+
+  setLovs(){
+    this.lovService.getDepartments().subscribe();
   }
 }

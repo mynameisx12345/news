@@ -1,0 +1,76 @@
+<div [formGroup]="registerFg" fxLayout="column" class="mt-5" fxLayoutGap="10px">
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Register As</mat-label>
+      <mat-select formControlName="userType">
+        <mat-option value="1">Audience</mat-option>
+        <mat-option value="2">Journalist</mat-option>
+        <mat-option value="3">Administrator</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+ 
+  <div fxLayout="row" fxLayoutGap="10px">
+    <mat-form-field appearance="outline" fxFlex="30">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="30">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password">
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="30">
+      <mat-label>ID Number</mat-label>
+      <input matInput formControlName="idNumber">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px">
+    <mat-form-field appearance="outline" fxFlex="25">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstname">
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="25">
+      <mat-label>Middle Name</mat-label>
+      <input matInput formControlName="middlename">
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="25">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastname">
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="10">
+      <mat-label>Suffix</mat-label>
+      <input matInput formControlName="suffix">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field appearance="outline" fxFlex="30">
+      <mat-label>Department</mat-label>
+      <mat-select formControlName="department">
+        <mat-option *ngFor="let department of (department$ | async)" [value]="department?.id">{{department.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="column" *ngIf="registerFg.get('userType').value == 2">
+    <span>New journalists are required to complete the required examination. Download the questionnaire, answer the questions and upload your answer on pdf file format.</span>
+    <button mat-raised-button color="primary" (click)="downloadQuestionnaire()">Download Questionnaire</button>
+    <mat-form-field appearance="outline" class="w-100 mt-3">
+      <mat-label>Upload your answer here</mat-label>
+      <input matInput [value]="fileToUpload?.name" readonly>
+      <input type="file" #file accept="application/pdf" hidden="true" 
+        (change)="handleFileInput($event)">
+      <button mat-button matSuffix (click)="file.click()">
+        <mat-icon>upload_file</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div fxLayoutAlign="center end" class="w-100 mt-5">
+    <button mat-raised-button 
+      color="accent" 
+      [disabled]="!registerFg.valid"
+      (click)="register()">
+      SAVE
+    </button>
+  </div>
+</div>
