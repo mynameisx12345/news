@@ -1,8 +1,11 @@
 <div class="selected pt-3" fxLayout="column" fxLayoutGap="20px">
-  <div class="title">test titletest title test title test title test title test title test title test title  </div>
-  <img src="../../../assets/icons/news.png" width="70%" height="auto">
-  <div class="w-50">{{content}}</div>
-  <app-comment class="w-50" [comments]="comments"
-    (addCommentSrc)="addComment($event)"></app-comment>
+  <div class="title">{{title}}</div>
+  <img [src]="imgSrc" width="70%" height="auto">
+  <div class="w-75 content">{{content}}</div>
+  <!-- <app-comment class="w-50" [comments]="comments"
+    (addCommentSrc)="addComment($event)"></app-comment> -->
+  <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px" class="w-75"> 
+    <button mat-raised-button color="primary" (click)="edit()">Edit</button>
+  </div>
 </div>
-<app-reaction></app-reaction>
+<!-- <app-reaction></app-reaction> -->

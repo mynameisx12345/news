@@ -21,6 +21,9 @@ const routes: Routes = [
     CustomCommonModule,
     ComponentsModule,
     RouterModule.forChild(routes)
+  ],
+  exports: [
+    SelectedNewsComponent
   ]
 })
 export class ViewNewsModule { }

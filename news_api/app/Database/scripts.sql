@@ -19,4 +19,19 @@ CREATE TABLE users (
     exam LONGBLOB
 )
 
+CREATE TABLE template (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    file LONGBLOB
+)
 
+CREATE TABLE news (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(200),
+    image LONGBLOB,
+    description LONGTEXT,
+ 	author INT,
+    FOREIGN KEY (author) REFERENCES users(id),
+    date_published DATE,
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES department(id)
+)

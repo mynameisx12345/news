@@ -157,5 +157,8 @@ export class HeaderComponent implements OnInit{
     this.currentDepartment = dept.name;
   }
 
+  gotoFrontPage(){
+    this.router.navigate(['/front-page']);
+  }
 
 }

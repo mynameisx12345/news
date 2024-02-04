@@ -1,13 +1,13 @@
 <div fxLayout="row" class="dashboard">
   <div fxLayout="column" class="w-25">
-    <button mat-raised-button color="primary">
+    <button mat-raised-button color="primary" (click)="addNew()">
       <mat-icon>add</mat-icon>
       <span>ADD NEW</span>
     </button>
-    <app-my-news-list></app-my-news-list>
+    <app-my-news-list [news]="myNews$ | async"></app-my-news-list>
   </div>
-  <div fxLayout="column" class="w-75">
-    <div class="content" fxLayout="column" fxLayoutGap="20px">
+  <div fxLayout="column" class="w-75" [ngSwitch]="mode" fxLayoutGap="20px">
+    <div class="content" fxLayout="column" fxLayoutGap="20px" *ngSwitchCase="'dashboard'">
       <span class="title">DASHBOARD</span>
       <div fxLayout="row" fxLayoutGap="20px">
         <div class="w-50" fxLayout="column" fxLayoutAlign="center center">
@@ -30,6 +30,16 @@
         </div>
       </div>
     </div>
+    <app-add-news *ngSwitchCase="'edit'" 
+      (setCurrentNews)="setCurrentNews($event)"
+      (onSave)="saveNews()"
+      [isNew]="isNew"
+      class="content"></app-add-news>
+    <app-selected-news *ngSwitchCase="'view'" 
+      (onEdit) = "edit()"
+      class="content"></app-selected-news>
+    
   </div>
+ 
   
 </div>

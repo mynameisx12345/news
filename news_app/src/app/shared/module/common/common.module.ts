@@ -22,6 +22,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {MatSelectModule} from '@angular/material/select';
 import { HttpClientModule } from '@angular/common/http';
+import {TextFieldModule} from '@angular/cdk/text-field';
 
 @NgModule({
   declarations: [],
@@ -53,6 +54,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatSortModule,
     MatSelectModule,
     HttpClientModule,
+    TextFieldModule
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'always', subscriptSizing: 'dynamic'}}

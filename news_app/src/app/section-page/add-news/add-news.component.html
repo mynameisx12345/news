@@ -1,0 +1,39 @@
+<div fxLayout="column" fxLayoutGap="10px" [formGroup]="newsFg">
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Content</mat-label>
+    <textarea matInput
+      formControlName = "content"
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="10"
+      cdkAutosizeMaxRows="20"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100 mt-3">
+    <mat-label>Select an interesting image</mat-label>
+    <input matInput [value]="fileToUpload?.name" readonly>
+    <input type="file" #file accept="image/*" hidden="true" 
+      (change)="handleFileInput($event)">
+    <button mat-button matSuffix (click)="file.click()">
+      <mat-icon>photo_camera</mat-icon>
+    </button>
+  </mat-form-field>
+  
+  <mat-form-field>
+    <mat-label>Department</mat-label>
+    <mat-select formControlName="department">
+      <mat-option *ngFor="let department of departments$ | async" [value]="department.id">
+        {{department.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px">
+    <button mat-raised-button color="primary" (click)="preview()"  [disabled]="!newsFg.valid">Show Preview</button>
+    <button mat-raised-button color="accent" [disabled]="!newsFg.valid" (click)="saveNews()">Save</button>
+    <button mat-raised-button color="warn"  [disabled]="!newsFg.valid">Publish</button>
+  </div>
+</div>

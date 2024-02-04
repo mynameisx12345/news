@@ -7,6 +7,8 @@ import { ComponentsModule } from '../shared/components/components.module';
 import { FrontPageModule } from '../front-page/front-page.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MyNewsListComponent } from './my-news-list/my-news-list.component';
+import { AddNewsComponent } from './add-news/add-news.component';
+import { ViewNewsModule } from '../view-news/view-news.module';
 
 const routes: Routes= [
   {
@@ -23,14 +25,16 @@ const routes: Routes= [
   declarations: [
     SectionAComponent,
     DashboardComponent,
-    MyNewsListComponent
+    MyNewsListComponent,
+    AddNewsComponent
   ],
   imports: [
     CommonModule,
     CustomCommonModule,
     ComponentsModule,
     RouterModule.forChild(routes),
-    FrontPageModule
+    FrontPageModule,
+    ViewNewsModule
   ]
 })
 export class SectionPageModule { }
