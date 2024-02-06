@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/auth/user.service';
-import { map,tap, switchMap } from 'rxjs';
+import { map,tap, switchMap, BehaviorSubject, filter, take, combineLatest, withLatestFrom } from 'rxjs';
 import { LovService } from '../../services/lov.service';
 
 @Component({
@@ -77,15 +77,32 @@ export class HeaderComponent implements OnInit{
   currentDepartment = null;
   departments = null;
   journalistDept = null;
+  loadLovService$ = new BehaviorSubject(false);
+  departments$ =  this.lovService.departments$;
+
+  journalistDept$ = combineLatest(this.userService.currentUser$, this.lovService.departments$).pipe(
+    map(([user, departments])=>{
+      if(departments?.length > 0){
+        return  departments.filter(dept=>dept.id == user['department'] || dept.name ==='SEA BREEZE');
+      } else {
+        return [];
+      }
+     
+    })
+  )
+  
 
   currentUserName$ = this.currentUser$.pipe(
+    take(1),
     tap((user:any)=>{
       if(user!== null){
         this.userId = user.id;
         if(user.userType === '3'){
           this.isAdmin = true
         } else if(user.userType==='2'){
+          console.log('userser',user)
           this.isJournalist = true;
+         
         }
       }
       
@@ -123,7 +140,7 @@ export class HeaderComponent implements OnInit{
 
   logout(){
     this.userService.logout();
-    this.router.navigate(['/front-page']);
+    this.router.navigate(['/auth/login']);
   }
 
   setLovs(){
@@ -134,11 +151,10 @@ export class HeaderComponent implements OnInit{
       }),
       switchMap((departments)=>{
         return this.userService.currentDepartment$.pipe(
+  
           tap((curDept)=>{
             this.currentDepartment = this.departments.find(dept=>dept.id === curDept)?.name;
-            this.journalistDept = this.departments.filter((dept)=>{
-              return dept.id === curDept || dept.name === "SEA BREEZE"
-            })
+           
           })
         )
       })
@@ -155,10 +171,15 @@ export class HeaderComponent implements OnInit{
 
   switchDepartment(dept){
     this.currentDepartment = dept.name;
+    this.userService.setCurrentDepartment(dept.id);
   }
 
   gotoFrontPage(){
     this.router.navigate(['/front-page']);
+  }
+
+  openFeaturedSettings(){
+    this.router.navigate(['/admin/featured'])
   }
 
 }

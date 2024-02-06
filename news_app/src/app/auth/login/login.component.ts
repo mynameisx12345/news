@@ -20,10 +20,18 @@ export class LoginComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
+    this.userService.isLogged$.subscribe((logged)=>{
+      if(logged){
+        this.router.navigate(['/front-page']);
+      }
+    })
+    
     this.loginFg = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     })
+
+   
   }
 
   login(){

@@ -1,12 +1,14 @@
 <div fxLayout="column" class="news-list">
   <div class="header">MY NEWS</div>
-  <div fxLayout="column" fxLayoutGap="1px">
-    <div *ngFor="let item of news" class="item" (click)="openNews(item.link)">
-      {{item.title}}
+  <div fxLayout="column" fxLayoutGap="2px" class="list">
+    <div *ngFor="let item of news" class="item"  fxLayout="row"
+      [style.background-color] = "!!item.date_published ? '#ffeeac' : '#ddd'"
+      (click)="openNews(item)">
+      <div ></div><span>{{item.title}}</span>
     </div>
   </div>
-  <div class="ms-2" fxLayout="column">
+  <!-- <div class="ms-2" fxLayout="column">
     
     <app-view-more></app-view-more>
-  </div>
+  </div> -->
 </div>

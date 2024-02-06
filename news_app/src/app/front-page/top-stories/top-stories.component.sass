@@ -3,6 +3,7 @@
   
   .top-most
     max-height: 700px
+    overflow: hidden
     // background: yellow
     .title
       font-weight: bold
@@ -16,3 +17,9 @@
     .sub-title
         font-weight: bold
         cursor: pointer
+    .content
+      display: block
+      text-overflow: ellipsis
+      word-wrap: break-word
+      overflow: hidden
+      max-height: 65px

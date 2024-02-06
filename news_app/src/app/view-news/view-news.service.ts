@@ -24,10 +24,21 @@ export class ViewNewsService {
     return this.http.post(`${this.apiUrl}/news/save`, news);
   }
 
-  getNews(author){
+  getNews(author='', department='', published='',id=''){
+    console.log('searched');
     let param = '?';
     if(author){
-      param += `author=${author}`;
+      param += `author=${author}&`;
+    }
+
+    if(department){
+      param += `department=${department}&`;
+    }
+    if(published){
+      param += `published=${published}&`;
+    }
+    if(id){
+      param += `id=${id}`;
     }
 
     return this.http.get(`${this.apiUrl}/news/get${param}`).pipe(
@@ -35,6 +46,7 @@ export class ViewNewsService {
         return news.map((newsA)=>{
           return {
             ...newsA,
+            department: newsA.department_id,
             image: newsA.image ? this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${newsA.image}`):
               newsA.image
           }
@@ -45,8 +57,9 @@ export class ViewNewsService {
 }
 
 interface News {
+  id: number,
   title: string,
   content: string,
   image: any,
-  department: []
+  department: any;
 }

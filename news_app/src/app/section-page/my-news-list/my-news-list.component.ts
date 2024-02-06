@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { ViewNewsService } from 'src/app/view-news/view-news.service';
+import { b64toBlob } from 'src/app/shared/util';
 @Component({
   selector: 'app-my-news-list',
   templateUrl: './my-news-list.component.html',
@@ -8,8 +9,10 @@ import { Router } from '@angular/router';
 })
 export class MyNewsListComponent {
   @Input() news = [];
+  @Output() onSelectNews = new EventEmitter;
   constructor(
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly viewNewsService: ViewNewsService
   ){}
   // news = [ 
   //   {
@@ -86,7 +89,8 @@ export class MyNewsListComponent {
   //   },
   // ];
 
-  openNews(link:any){
-    this.router.navigate([`${link}`]);
+  openNews(news:any){
+    this.viewNewsService.setCurrentNews(news);
+    this.onSelectNews.emit();
   }
 }

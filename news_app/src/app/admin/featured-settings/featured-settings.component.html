@@ -1,0 +1,35 @@
+<div fxLayout="column">
+  <div>
+    <div class="example-container">
+      <h2>Published News</h2>
+    
+      <div
+        cdkDropList
+        #todoList="cdkDropList"
+        [cdkDropListData]="todo"
+        [cdkDropListConnectedTo]="[doneList]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" cdkDrag *ngFor="let item of todo; track item">{{item?.title}}</div>
+        
+      </div>
+    </div>
+    
+    <div class="example-container">
+      <h2>Featured News</h2>
+    
+      <div
+        cdkDropList
+        #doneList="cdkDropList"
+        [cdkDropListData]="done"
+        [cdkDropListConnectedTo]="[todoList]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+          <div class="example-box" cdkDrag *ngFor= "let item of done; track item">{{item?.title}}</div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="end end">
+    <button mat-raised-button color="accent" (click)="save()">Save</button>
+  </div>
+</div>

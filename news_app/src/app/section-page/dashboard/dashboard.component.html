@@ -4,10 +4,11 @@
       <mat-icon>add</mat-icon>
       <span>ADD NEW</span>
     </button>
-    <app-my-news-list [news]="myNews$ | async"></app-my-news-list>
+    <app-my-news-list (onSelectNews)="selectNews()"
+      [news]="myNews$ | async"></app-my-news-list>
   </div>
   <div fxLayout="column" class="w-75" [ngSwitch]="mode" fxLayoutGap="20px">
-    <div class="content" fxLayout="column" fxLayoutGap="20px" *ngSwitchCase="'dashboard'">
+    <!-- <div class="content" fxLayout="column" fxLayoutGap="20px" *ngSwitchCase="'dashboard'">
       <span class="title">DASHBOARD</span>
       <div fxLayout="row" fxLayoutGap="20px">
         <div class="w-50" fxLayout="column" fxLayoutAlign="center center">
@@ -29,7 +30,7 @@
           <span>OTHERS B</span>
         </div>
       </div>
-    </div>
+    </div> -->
     <app-add-news *ngSwitchCase="'edit'" 
       (setCurrentNews)="setCurrentNews($event)"
       (onSave)="saveNews()"

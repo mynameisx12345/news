@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ViewNewsService } from '../view-news.service';
-import { tap } from 'rxjs';
+import { tap, take } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-selected-news',
@@ -13,19 +14,45 @@ export class SelectedNewsComponent implements OnInit{
   title = '';
   comments:any[] = [];
   imgSrc: any;
+
+  searchMode = false;
   constructor(
     private readonly viewNewsService: ViewNewsService,
-    
+    private readonly route: ActivatedRoute
   ){}
 
   ngOnInit(): void {
     this.viewNewsService.currentNews$.pipe(
       tap(news=>{
-        this.content = news.content;
-        this.title = news.title;
-        this.imgSrc = URL.createObjectURL(news.image);
+        let image = news?.image instanceof Blob ? URL.createObjectURL(news.image) : news?.image;
+        this.content = news?.content;
+        this.title = news?.title;
+        this.imgSrc =image;
       })
     ).subscribe();
+
+    this.route.queryParams.subscribe((param)=>{
+      console.log('param', param)
+      if(param.hasOwnProperty('id')){
+        this.searchMode = true;
+        this.viewNewsService.getNews('','','',param['id']).pipe(
+          take(1),
+          tap(news=>{
+            if(news.length > 0){
+              let [show] = news;
+              console.log('news', show);
+              this.viewNewsService.setCurrentNews(show);
+            }
+            
+          })
+        ).subscribe();
+      } 
+    })
+
+   
+
+
+    
   }
 
   addComment(comment:any){

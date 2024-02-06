@@ -55,7 +55,7 @@
     <button mat-raised-button color="primary" (click)="downloadQuestionnaire()">Download Questionnaire</button>
     <mat-form-field appearance="outline" class="w-100 mt-3">
       <mat-label>Upload your answer here</mat-label>
-      <input matInput [value]="fileToUpload?.name" readonly>
+      <input matInput [value]="fileToUpload && fileToUpload.name" readonly>
       <input type="file" #file accept="application/pdf" hidden="true" 
         (change)="handleFileInput($event)">
       <button mat-button matSuffix (click)="file.click()">

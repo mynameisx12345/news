@@ -35,3 +35,13 @@ CREATE TABLE news (
     department_id INT,
     FOREIGN KEY (department_id) REFERENCES department(id)
 )
+
+CREATE TABLE featured(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    news_id INT,
+    FOREIGN KEY (news_id) REFERENCES news(id),
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES department(id),
+    date_featured DATE,
+    is_active BOOLEAN
+)

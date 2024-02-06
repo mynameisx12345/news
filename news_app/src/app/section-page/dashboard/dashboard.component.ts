@@ -18,7 +18,6 @@ export class DashboardComponent implements OnInit{
     withLatestFrom(this.userService.currentUser$),
     switchMap(([load,user])=>this.viewNewsService.getNews(user['id'])),
     tap((news)=>{
-      console.log('mynews', news);
       this.loadMyNews$.next(false);
     })
   )
@@ -62,13 +61,16 @@ export class DashboardComponent implements OnInit{
 
   setCurrentNews(news){
 
-    console.log('news', news)
     this.viewNewsService.setCurrentNews(news);
     this.mode = 'view';
   };
 
   saveNews(){
     this.loadMyNews$.next(true);
+  }
+
+  selectNews(){
+    this.mode = 'view';
   }
 
 }

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '', redirectTo: 'front-page', pathMatch: 'full'
+    path: '', redirectTo: '/auth/login', pathMatch: 'full'
   },
   {
     path: 'front-page',

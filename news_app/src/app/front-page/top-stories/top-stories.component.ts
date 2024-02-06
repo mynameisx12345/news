@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./top-stories.component.sass']
 })
 export class TopStoriesComponent {
+  @Input() featured = [
+    {title: '', content: '', image: ''}
+  ];
   constructor(
     private readonly router: Router,
   ){}
@@ -33,7 +36,7 @@ export class TopStoriesComponent {
     },
   ]
 
-  openNews(){
-    this.router.navigate(['/news/selected-news'])
+  openNews(news){
+    this.router.navigateByUrl(`/news/selected-news?id=${news.id}`)
   }
 }

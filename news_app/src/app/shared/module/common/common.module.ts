@@ -23,6 +23,7 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatSelectModule} from '@angular/material/select';
 import { HttpClientModule } from '@angular/common/http';
 import {TextFieldModule} from '@angular/cdk/text-field';
+import {DragDropModule} from '@angular/cdk/drag-drop'
 
 @NgModule({
   declarations: [],
@@ -54,7 +55,8 @@ import {TextFieldModule} from '@angular/cdk/text-field';
     MatSortModule,
     MatSelectModule,
     HttpClientModule,
-    TextFieldModule
+    TextFieldModule,
+    DragDropModule
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'always', subscriptSizing: 'dynamic'}}

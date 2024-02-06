@@ -21,4 +21,6 @@ $routes->group('lov', function($routes){
 $routes->group('news', function($routes){
   $routes->post('save','NewsController::saveNews');
   $routes->get('get','NewsController::getNews');
+  $routes->post('featured','NewsController::setFeatured');
+  $routes->get('featured','NewsController::getFeatured');
 });

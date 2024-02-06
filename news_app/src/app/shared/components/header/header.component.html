@@ -60,17 +60,21 @@
               <mat-icon>manage_accounts</mat-icon>
               <span>Users</span>
             </button>
+            <button mat-menu-item (click)="openFeaturedSettings()">
+              <mat-icon>manage_accounts</mat-icon>
+              <span>Featured</span>
+            </button>
           </mat-menu>
 
           <mat-menu #department="matMenu">
             <div *ngIf="isAdmin">
-              <button mat-menu-item *ngFor="let dept of departments" (click)="switchDepartment(dept)">
+              <button mat-menu-item *ngFor="let dept of departments$ | async" (click)="switchDepartment(dept)">
                 <mat-icon>group</mat-icon>
                 <span>{{dept.name}}</span>
               </button>
             </div>
             <div *ngIf="isJournalist">
-              <button mat-menu-item *ngFor="let dept of journalistDept" (click)="switchDepartment(dept)">
+              <button mat-menu-item *ngFor="let dept of journalistDept$ | async" (click)="switchDepartment(dept)">
                 <mat-icon>group</mat-icon>
                 <span>{{dept.name}}</span>
               </button>
@@ -85,13 +89,13 @@
   </div>
   
   
-  <div fxLayout="row" fxLayoutAlign="center center">
+  <!-- <div fxLayout="row" fxLayoutAlign="center center">
     <mat-form-field appearance="outline" fxFlex="30">
       <input matInput placeholder="Search News">
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
     <button mat-raised-button color="accent" style="height:56px">Search</button>
-  </div>
+  </div> -->
   <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="center center">
     <!-- <div *ngFor="let section of sections" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" (click)="goToLink(section.link)">
       <img [src]="'../../../../assets/icons/' + section.icon" height="21px" width="auto" >

@@ -50,6 +50,10 @@ export class AdminService {
     )
   }
 
+  saveFeatured(data){
+    return this.http.post(`${this.apiUrl}/news/featured`,data);
+  }
+
   
 }
 
