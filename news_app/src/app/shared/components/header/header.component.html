@@ -1,8 +1,8 @@
 <div class="header" fxLayout="column" fxLayoutGap="10px">
   <div class="sub-header-cont">
     <div fxLayout="row" class="subheader" fxLayoutAlign="space-between center">
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-        <img src="../../../../assets/icons/logo1.png" height="50px" (click)="gotoFrontPage()">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="home-link" (click)="gotoFrontPage()">
+        <img src="../../../../assets/icons/logo1.png" height="50px" >
         <div class="title">kas<span class="u">U</span>-b<span class="a">A</span>ybay</div>
       </div>
       
@@ -37,15 +37,15 @@
               <mat-icon>person</mat-icon>
               <span>Profile</span>
             </button>
-            <button mat-menu-item [matMenuTriggerFor]="department" *ngIf="isJournalist || isAdmin">
+            <button mat-menu-item [matMenuTriggerFor]="department" *ngIf="(isJournalist$ | async) || (isAdmin$ | async)">
               <mat-icon>switch_access_shortcut</mat-icon>
               <span>Switch Department</span>
             </button>
-            <button mat-menu-item (click)="openDashboard()" *ngIf="isJournalist">
+            <button mat-menu-item (click)="openDashboard()" *ngIf="(isJournalist$ | async)">
               <mat-icon>star</mat-icon>
               <span>My News</span>
             </button>
-            <button mat-menu-item [matMenuTriggerFor]="admin" *ngIf="isAdmin">
+            <button mat-menu-item [matMenuTriggerFor]="admin" *ngIf="(isAdmin$ | async)">
               <mat-icon>admin_panel_settings</mat-icon>
               <span>Admin Settings</span>
             </button>
@@ -67,13 +67,13 @@
           </mat-menu>
 
           <mat-menu #department="matMenu">
-            <div *ngIf="isAdmin">
+            <div *ngIf="(isAdmin$ | async)">
               <button mat-menu-item *ngFor="let dept of departments$ | async" (click)="switchDepartment(dept)">
                 <mat-icon>group</mat-icon>
                 <span>{{dept.name}}</span>
               </button>
             </div>
-            <div *ngIf="isJournalist">
+            <div *ngIf="(isJournalist$ | async)">
               <button mat-menu-item *ngFor="let dept of journalistDept$ | async" (click)="switchDepartment(dept)">
                 <mat-icon>group</mat-icon>
                 <span>{{dept.name}}</span>

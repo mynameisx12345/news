@@ -78,7 +78,11 @@ export class HeaderComponent implements OnInit{
   departments = null;
   journalistDept = null;
   loadLovService$ = new BehaviorSubject(false);
-  departments$ =  this.lovService.departments$;
+  departments$ =  this.lovService.departments$.pipe(
+    tap(dept=>{
+      console.log('dept', dept)
+    })
+  )
 
   journalistDept$ = combineLatest(this.userService.currentUser$, this.lovService.departments$).pipe(
     map(([user, departments])=>{
@@ -91,10 +95,51 @@ export class HeaderComponent implements OnInit{
     })
   )
   
+loadCurrentUser$ = new BehaviorSubject(false);
+
+currentUserNameA$ =this.loadCurrentUser$.pipe(
+  filter(load=>load),
+  withLatestFrom(this.currentUser$),
+  map(([load,user])=>{
+    if(user!== null){
+      this.userId = user['id'];
+
+      return `${user['firstname']} ${user['middlename'] ? user['middlename'] :''} ${user['lastname']} ${user['suffix'] ? user['suffix'] : ''}`;
+    } else {
+      return '';
+    }
+   
+  }),
+  tap(()=>{
+    this.loadCurrentUser$.next(false);
+  })
+)
+
+isAdmin$ = this.userService.currentUser$.pipe(
+  map((user)=>{
+    if(user){
+      return user['userType']=== '3';
+    } else {
+      return false;
+    }
+  })
+);
+
+isJournalist$ =this.userService.currentUser$.pipe(
+  map((user)=>{
+    if(user){
+      return user['userType']=== '2';
+    } else {
+      return false;
+    }
+    
+  })
+);
 
   currentUserName$ = this.currentUser$.pipe(
-    take(1),
+    //take(1),
     tap((user:any)=>{
+      console.log('users', user)
       if(user!== null){
         this.userId = user.id;
         if(user.userType === '3'){
@@ -175,7 +220,11 @@ export class HeaderComponent implements OnInit{
   }
 
   gotoFrontPage(){
-    this.router.navigate(['/front-page']);
+    this.userService.isLogged$.subscribe((res)=>{
+      if(res){
+        this.router.navigate(['/front-page']);
+      }
+    })
   }
 
   openFeaturedSettings(){

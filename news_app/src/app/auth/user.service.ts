@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, tap, catchError, of } from 'rxjs';
+import { BehaviorSubject, map, tap, catchError, of, switchMap, filter } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
+import { LovService } from '../shared/services/lov.service';
 
 
 @Injectable({
@@ -21,7 +22,8 @@ export class UserService {
   currentDepartment$ = this.currentDepartment.asObservable();
 
   constructor(
-    private readonly http: HttpClient
+    private readonly http: HttpClient,
+    private readonly lovService: LovService
   ) { 
     if(sessionStorage.getItem('user')){
       let currentuser: User = JSON.parse(sessionStorage.getItem('user') as string);
@@ -54,7 +56,6 @@ export class UserService {
     };
     return this.http.post(`${this.apiUrl}/users/login`, params).pipe(
       tap((resp:any)=>{
-        console.log('teng1234', resp)
         if(resp !== 'Access Denied'){
           const [user] = resp;
           console.log('user',user)
@@ -72,11 +73,17 @@ export class UserService {
           };
           this.setCurrentUser(currentUser);
           
+          
           this.isLogged$.next(true);
         } else {
 
         }
         
+      }), 
+      filter(resp=> resp !== 'Access Denied'),
+      switchMap((resp)=>{
+
+        return this.lovService.getDepartments()
       }),
       map((resp)=>{
         return true;
@@ -90,6 +97,7 @@ export class UserService {
     this.setCurrentUser(null);
     this.setCurrentDepartment(null);
     this.isLogged$.next(false);
+    this.lovService.setDepartments([]);
   }
 
   register(data:any){
