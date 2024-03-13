@@ -30,6 +30,9 @@ export class SelectedNewsComponent implements OnInit{
       this.loadComments$.next(false);
     })
   )
+
+  liked = false;
+  likeId = null;
   constructor(
     private readonly viewNewsService: ViewNewsService,
     private readonly route: ActivatedRoute,
@@ -71,11 +74,20 @@ export class SelectedNewsComponent implements OnInit{
       tap((user)=>{
         console.log('currentuser', user)
         this.currentUser = user
-      }),
-      take(1)
+      }), 
+      take(1),
+      switchMap(()=>this.viewNewsService.getLikes(this.newsId, this.currentUser.id)),
+      tap((likes:any)=>{
+        if(likes.length>0){
+          this.liked = true;
+          this.likeId =likes[0].id
+        }
+      })
     ).subscribe();
 
-    
+    setTimeout(()=>{
+      this.visit();
+    }, 3000)
   }
 
   addComment(comment:any){
@@ -119,9 +131,35 @@ export class SelectedNewsComponent implements OnInit{
     ).subscribe();
   }
 
-
-
   edit(){
     this.onEdit.emit();
+  }
+
+  like(){
+    let data = {
+      id: this.likeId,
+      user_id: this.currentUser?.id,
+      news_id: this.newsId
+    }
+    this.viewNewsService.like(data).subscribe((like:any)=>{
+      if(like.likeId === null){
+        this.liked = false;
+        this.likeId = null;
+      } else {
+        this.liked = true;
+        this.likeId = like.likeId;
+      }
+      
+    });
+  }
+
+  visit(){
+    let data = {
+      id: "",
+      news_id: this.newsId,
+      user_id: this.currentUser?.id
+    }
+
+    this.viewNewsService.visit(data).subscribe();
   }
 }

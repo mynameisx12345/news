@@ -192,4 +192,77 @@ class NewsController extends BaseController
     ->setStatusCode(200)
     ->setJson(['message'=>'Success']);
   }
+
+  public function like(){
+    $db = db_connect();
+
+    $model = new NewsModel($db);
+    date_default_timezone_set('Asia/Singapore');
+    $curDate = date('y-m-d');
+
+    $data = [
+      'id' => $this->request->getJSON()->id,
+      'news_id' => $this->request->getJSON()->news_id,
+      'user_id' => $this->request->getJSON()->user_id,
+      'dt_liked' => $curDate
+    ];
+
+    
+
+    $likeId = $model->like($data);
+
+
+    return $this->response 
+    ->setStatusCode(200)
+    ->setJson(['message'=>'Success', 'likeId'=> $likeId]);
+  }
+
+  public function getLikes(){
+    $db = db_connect();
+
+    $model = new NewsModel($db);
+
+    $userId = $this->request->getGet('userId');
+    $newsId = $this->request->getGet('newsId');
+
+    $result = $model->getLikes($newsId, $userId);
+
+    return $this->response
+      ->setStatusCode(200)
+      ->setJson($result);
+  }
+
+  public function visit(){
+    $db = db_connect();
+
+    $model = new NewsModel($db);
+    date_default_timezone_set('Asia/Singapore');
+    $curDate = date('Y-m-d');
+    $data = [
+      'id' => $this->request->getJSON()->id,
+      'news_id' => $this->request->getJSON()->news_id,
+      'user_id' => $this->request->getJSON()->user_id,
+      'dt_visited' => $curDate
+    ];
+
+    $result = $model->visit($data);
+
+    return $this->response
+      ->setStatusCode(200)
+      ->setJson(["newVisit"=> count($result)===0]);
+  }
+
+  public function getTrending(){
+    $db = db_connect();
+
+    $model = new NewsModel($db);
+    $department = $this->request->getGet('department');
+    $result = $model->getTrending($department);
+
+    return $this->response
+      ->setStatusCode(200)
+      ->setJson($result);
+  }
+
+
 }

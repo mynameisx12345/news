@@ -165,4 +165,97 @@ class NewsModel{
       ->delete();
   }
 
+  function like($data){
+   
+    if(empty($data['id'])){
+     
+      $this->db->table('likes')
+        ->insert($data);
+        // print_r($data);
+        // return;
+        $likeId = $this->db->insertID();
+       
+        return $likeId;
+    } else {
+      $this->db->table('likes')
+        ->where('id', $data['id'])
+        ->delete();
+
+        return null;
+    }
+  }
+
+  function getLikes($newsId, $userId){
+    $builder = $this->db->table('likes');
+
+    if(!empty($userId)){
+      $builder->where('user_id', $userId);
+    }
+
+    $builder->where('news_id',$newsId);
+    $query = $builder->get()->getResult();
+
+    return $query;
+  }
+
+  function visit($data){
+    
+    $builder = $this->db->table('visits');
+    $builder->where('dt_visited',$data['dt_visited']);
+    $builder->where('user_id', $data['user_id']);
+    $builder->where('news_id', $data['news_id']);
+  
+    $query = $builder->get()->getResult();
+
+    if(count($query)===0){
+      $this->db->table('visits')
+        ->insert($data);
+    }
+
+    return $query;
+  }
+
+  function getTrending($department){
+    $builder = $this->db->table('news');
+
+    $builder->join(' (SELECT news_id, sum(num) total
+    FROM 
+    (
+        (SELECT news_id, count(*) as num
+        FROM likes 
+        WHERE dt_liked >= (SELECT DATE(DATE_SUB(NOW(), INTERVAL 10 day)))
+        GROUP BY news_id)
+
+        UNION
+
+        (SELECT news_id, count(*) as num
+        FROM visits 
+        WHERE dt_visited >= (SELECT DATE(DATE_SUB(NOW(), INTERVAL 10 day)))
+        GROUP BY news_id)
+
+        UNION
+
+        (SELECT news_id, count(*) as num
+        FROM comment 
+        WHERE dt_commented >= (SELECT DATE(DATE_SUB(NOW(), INTERVAL 10 day)))
+        GROUP BY news_id)
+    ) as result
+    GROUP BY news_id
+    ORDER BY sum(num) DESC
+    LIMIT 20) as trending', 'trending.news_id=news.id');
+    $builder->select('news.*, trending.*');
+
+    if(!empty($department)){
+      $builder->where('news.department_id', $department);
+    }
+    $builder->orderBy('trending.total','DESC');
+
+    $query = $builder->get()->getResult();
+    foreach($query as $key => $res){
+      $query[$key]->image = base64_encode($query[$key]->image);
+     }
+    return $query;
+    
+  }
+
 }

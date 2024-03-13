@@ -86,6 +86,20 @@ export class ViewNewsService {
       })
     )
   }
+
+  getLikes(newsId, userId=null){
+    let userIdUrl= userId ? `&userId=${userId}` : '';
+    
+    return this.http.get(`${this.apiUrl}/news/like?newsId=${newsId}${userIdUrl}`);
+  }
+
+  like(data){
+    return this.http.post(`${this.apiUrl}/news/like`, data);
+  }
+
+  visit(data){
+    return this.http.post(`${this.apiUrl}/news/visit`, data);
+  }
 }
 
 interface News {

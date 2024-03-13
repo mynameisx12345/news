@@ -63,3 +63,21 @@ CREATE TABLE comment (
     news_id INT,
     FOREIGN KEY (news_id) REFERENCES news(id)
 )
+
+CREATE TABLE likes (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    news_id INT,
+    FOREIGN KEY (news_id) REFERENCES news(id),
+    dt_liked DATE
+)
+
+CREATE TABLE visits (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    news_id INT,
+    FOREIGN KEY (news_id) REFERENCES news(id),
+    dt_visited DATE
+)

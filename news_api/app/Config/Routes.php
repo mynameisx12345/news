@@ -29,5 +29,9 @@ $routes->group('news', function($routes){
   $routes->post('comment', 'NewsController::saveComment');
   $routes->get('comment','NewsController::getComments');
   $routes->delete('comment','NewsController::deleteComment');
+  $routes->post('like', 'NewsController::like');
+  $routes->get('like', 'NewsController::getLikes');
+  $routes->post('visit', 'NewsController::visit');
+  $routes->get('trending', 'NewsController::getTrending');
 });
 

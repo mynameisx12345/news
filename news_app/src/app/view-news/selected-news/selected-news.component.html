@@ -1,8 +1,16 @@
 <div class="selected pt-3" fxLayout="column" fxLayoutGap="20px">
   <div class="title">{{title}}</div>
   <img [src]="imgSrc" width="70%" height="auto">
-  <div class="w-75 author">
-    Author: {{author}}
+  <div class="w-75 author" fxLayout="row" fxLayoutAlign="space-between center">
+    <div>Author: {{author}}</div>
+    <button mat-raised-button color="accent" *ngIf="liked" (click)="like()">
+        <span>You liked this</span>
+      <mat-icon color="warn">favorite</mat-icon>
+    </button>
+    <button mat-raised-button *ngIf="!liked" (click)="like()">
+      <span>Like this page</span>
+      <mat-icon color="accent">favorite</mat-icon>
+    </button>
   </div>
   <div class="w-75 content">{{content}}</div>
   <div class="w-50 comment">

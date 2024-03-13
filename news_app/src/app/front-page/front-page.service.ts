@@ -28,4 +28,23 @@ export class FrontPageService {
       })
     )
   }
+
+  getTrending(department=null){
+    let url = `${this.apiUrl}//news/trending`;
+    if(department){
+      url = `${this.apiUrl}//news/trending?department=${department}`;
+    }
+    return this.http.get(url).pipe(
+      map((news:any)=>{
+        return news.map((newsA)=>{
+          return {
+            ...newsA,
+            department: newsA.department_id,
+            image: newsA.image ? this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${newsA.image}`):
+              newsA.image
+          }
+        })
+      })
+    )
+  }
 }

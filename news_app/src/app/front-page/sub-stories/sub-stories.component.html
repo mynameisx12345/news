@@ -4,10 +4,13 @@
       TRENDING
     </div>
     <div fxLayout="row wrap">
-      <mat-card class="story" *ngFor="let item of news">
+      <mat-card class="story" *ngFor="let item of trendingA$ | async" (click)="openNews(item)"> 
         <mat-card-content fxLayout="row" class="h-100" fxLayoutGap="10px" fxLayoutAlign="start center">
-          <img src="../../../assets/icons/news.png" height="100%" width="auto">
-          <div>{{item.title}}</div>
+          <img [src]="item.image" height="100%" width="auto">
+          <div>
+            <span>{{item.title}}</span>
+            <!-- <span>{{item.content}}</span> -->
+          </div>
         </mat-card-content>
       </mat-card>
     </div>
