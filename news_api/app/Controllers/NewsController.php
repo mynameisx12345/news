@@ -139,4 +139,57 @@ class NewsController extends BaseController
     ->setStatusCode(200)
     ->setJson(['exams' =>$exams, 'message'=>'Success']);
   }
+
+  public function saveComment(){
+    $db = db_connect();
+
+    $model = new NewsModel($db);
+
+    date_default_timezone_set('Asia/Singapore');
+    $curDate = date('y-m-d');
+
+    $data = [
+      'comment' => $this->request->getJSON()->comment,
+      'dt_commented' => $curDate,
+      'user_id' => $this->request->getJSON()->user_id,
+      'news_id' => $this->request->getJSON()->news_id,
+      'id' => $this->request->getJSON()->id
+    ];
+
+    $isNew = false;
+
+    if(empty($this->request->getJSON()->id)){
+      $isNew = true;
+    }
+
+    $commentId = $model->saveComment($data);
+    return $this->response 
+    ->setStatusCode(200)
+    ->setJson(['commentId'=>$commentId, 'message'=>'Success', 'isNew'=> $isNew]);
+  }
+
+  public function getComments(){
+    $db = db_connect();
+
+    $model = new NewsModel($db);
+
+    $newsId = $this->request->getGet('newsId');
+
+    $result = $model->getComments($newsId);
+
+    return $this->response
+      ->setStatusCode(200)
+      ->setJson($result);
+  }
+
+  public function deleteComment(){
+    $db = db_connect();
+
+    $model = new NewsModel($db);
+    $commentId = $this->request->getGet('commentId');
+    $model->deleteComment($commentId);
+    return $this->response 
+    ->setStatusCode(200)
+    ->setJson(['message'=>'Success']);
+  }
 }

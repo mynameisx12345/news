@@ -12,7 +12,7 @@
             <textarea matInput class="min-height" [(ngModel)]="comment.message"></textarea>
           </mat-form-field> 
           <div fxLayout="row" fxLayoutAlign="end end" class="user">
-            - {{comment?.user}} {{comment?.dtModified}}
+            - {{comment?.user}} | {{comment?.dtModified}}
           </div>
         </div>
         <div fxLayout="column">
@@ -24,7 +24,7 @@
         <button mat-button *ngIf="!comment?.isRead" color="warn" (click)="cancelComment(comment)">
           <mat-icon>close</mat-icon>
         </button>
-        <button mat-button [matMenuTriggerFor]="menu" fxFlex="5" *ngIf="comment?.isRead">
+        <button mat-button [matMenuTriggerFor]="menu" fxFlex="5" *ngIf="comment?.isRead && canEdit(comment) ">
           <mat-icon>more_vert</mat-icon>
         </button>
         
@@ -37,9 +37,9 @@
           <button mat-menu-item (click)="startEditComment(comment)" *ngIf="canEdit(comment)">
             <mat-icon>edit</mat-icon> Edit
           </button>
-          <button mat-menu-item matTooltip="Report Comment">
+          <!-- <button mat-menu-item matTooltip="Report Comment">
             <mat-icon>report</mat-icon> Report
-          </button>
+          </button> -->
         </mat-menu>
       </div>
       

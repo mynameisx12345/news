@@ -26,22 +26,26 @@ class NewsModel{
 
   function getNews($author, $department, $published, $id){
     $builder = $this->db->table('news');
+    $builder->select('news.*, users.first_name, users.middle_name, users.last_name, users.suffix');
+    $builder->join('users','news.author = users.id');
+
     if(!empty($author)){
-      $builder->where('author', $author);
+      $builder->where('news.author', $author);
     }
     if(!empty($department)){
-      $builder->where('department_id', $department);
+      $builder->where('news.department_id', $department);
     }
 
     if(!empty($published)){
-      $builder->where('date_published is NOT NULL', NULL, false);
+      $builder->where('news.date_published is NOT NULL', NULL, false);
     }
 
     if(!empty($id)){
-      $builder->where('id',$id);
+      $builder->where('news.id',$id);
     }
 
-    $builder->orderBy('id','DESC');
+    
+    $builder->orderBy('news.id','DESC');
 
     $query = $builder->get()->getResult();
     foreach($query as $key => $res){
@@ -126,6 +130,39 @@ class NewsModel{
     $query = $builder->get()->getResult();
 
     return $query;
+  }
+
+  function saveComment($data){
+    if(empty($data['id'])){
+      $this->db->table('comment')
+        ->insert($data);
+
+      $commentId = $this->db->insertID();
+      return $commentId;
+    } else {
+      $builder = $this->db->table('comment');
+      $builder->where('id', $data['id']);
+      $builder->update($data);
+      return $data['id'];
+    }
+  }
+
+  function getComments($newsId){
+    $builder = $this->db->table('comment');
+    $builder->join('users', 'users.id = comment.user_id');
+    $builder->select('comment.*, CONCAT(users.first_name," ", users.middle_name, " ", users.last_name, " ", users.suffix) as user');
+    $builder->where('comment.news_id', $newsId);
+    $builder->orderBy('comment.id', 'ASC');
+
+    $query = $builder->get()->getResult();
+
+    return $query;
+  }
+
+  function deleteComment($commentId){
+    $this->db->table('comment')
+      ->where('id', $commentId)
+      ->delete();
   }
 
 }

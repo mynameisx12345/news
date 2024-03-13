@@ -53,3 +53,13 @@ CREATE TABLE exam(
     dt_scheduled DATE,
     type VARCHAR(10)
 )
+
+CREATE TABLE comment (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    comment TEXT,
+    user_id INT,
+	FOREIGN KEY (user_id) REFERENCES users(id),
+    dt_commented DATE,
+    news_id INT,
+    FOREIGN KEY (news_id) REFERENCES news(id)
+)

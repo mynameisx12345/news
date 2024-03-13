@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 // import { UserLogService } from 'src/app/user-log/user-log.service';
 import { fadeAnimation, listAnimation} from '../../../app.animation';
+import { UserService } from 'src/app/auth/user.service';
 
 @Component({
   selector: 'app-comment',
@@ -20,16 +21,18 @@ export class CommentComponent implements OnInit {
   hasUserLogged = true; //hasUserLogged = false;
 
   constructor(
-    //private readonly userService: UserLogService
+    private readonly userService: UserService
   ) { }
 
   ngOnInit(): void {
-    // this.userService.currentUser$.subscribe((user:any)=>{
-    //   this.currentUser = user;
-    // });
+    this.userService.currentUser$.subscribe((user:any)=>{
+      this.currentUser = user;
+    });
     // this.userService.logged.subscribe((logged:any)=>{
     //   this.hasUserLogged = logged;
     // })
+
+
   }
 
   addComment(){

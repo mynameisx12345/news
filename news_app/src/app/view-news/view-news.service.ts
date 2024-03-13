@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject, map } from 'rxjs';
 import { environment } from 'src/environment/environment';
+import * as moment from 'moment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -54,6 +56,36 @@ export class ViewNewsService {
       })
     )
   }
+
+  addComment(comment){
+    let data = {
+      id: comment.id,
+      comment: comment.message,
+      user_id: comment.user_id,
+      news_id: comment.news_id
+    }
+    return this.http.post(`${this.apiUrl}/news/comment`,data);
+  }
+
+  deleteComment(comment){
+    return this.http.delete(`${this.apiUrl}/news/comment?commentId=${comment.id}`);
+  }
+
+  getComments(newsId){
+    return this.http.get(`${this.apiUrl}/news/comment?newsId=${newsId}`).pipe(
+      map((comments:any)=>{
+        return comments.map(comment=>{
+          return {
+            ...comment,
+            message: comment.comment,
+            originalMessage: comment.comment,
+            dtModified: moment(comment.dt_commented).format('MMM DD, YYYY'),
+            isRead: true
+          }
+        })
+      })
+    )
+  }
 }
 
 interface News {
@@ -62,4 +94,8 @@ interface News {
   content: string,
   image: any,
   department: any;
+  first_name: string,
+  middle_name: string,
+  last_name: string,
+  suffix: string
 }

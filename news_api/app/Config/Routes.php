@@ -26,5 +26,8 @@ $routes->group('news', function($routes){
   $routes->get('get','NewsController::getNews');
   $routes->post('featured','NewsController::setFeatured');
   $routes->get('featured','NewsController::getFeatured');
+  $routes->post('comment', 'NewsController::saveComment');
+  $routes->get('comment','NewsController::getComments');
+  $routes->delete('comment','NewsController::deleteComment');
 });
 
