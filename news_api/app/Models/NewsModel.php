@@ -100,4 +100,32 @@ class NewsModel{
     return $query;
   }
 
+  function addExam($data){
+    $lastInsertId = null;
+
+    $this->db->table('exam')
+      ->insert($data);
+
+    $lastInsertId =  $this->db->insertID();
+    return $lastInsertId;
+  }
+
+  function deleteExam($id){
+    $this->db->table('exam')
+      ->where('id', $id)
+      ->delete();
+  }
+
+  function getExams($type){
+    $builder = $this->db->table('exam');
+    $builder->orderBy('dt_scheduled', 'ASC');
+
+    if(!empty($type)){
+      $builder->where('type', $type);
+    }
+    $query = $builder->get()->getResult();
+
+    return $query;
+  }
+
 }

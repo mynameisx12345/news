@@ -6,6 +6,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ViewMoreComponent } from './view-more/view-more.component';
 import { CommentComponent } from './comment/comment.component';
 import { ReactionComponent } from './reaction/reaction.component';
+import { TableTengComponent } from './table-teng/table-teng.component';
 
 
 
@@ -15,7 +16,8 @@ import { ReactionComponent } from './reaction/reaction.component';
     FooterComponent,
     ViewMoreComponent,
     CommentComponent,
-    ReactionComponent
+    ReactionComponent,
+    TableTengComponent
   ],
   imports: [
     CommonModule,

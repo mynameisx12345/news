@@ -93,4 +93,50 @@ class NewsController extends BaseController
       ->setStatusCode(200)
       ->setJson($result);
   }
+
+  public function addExam(){
+    $db = db_connect();
+
+    $model = new NewsModel($db);
+
+    $data = [
+      'description' => $this->request->getJSON()->description,
+      'dt_scheduled' => $this->request->getJSON()->dt_scheduled,
+      'type' => $this->request->getJSON()->type,
+    ];
+
+    $examId = $model->addExam($data);
+
+    return $this->response 
+      ->setStatusCode(200)
+      ->setJson(['examId'=>$examId, 'message'=>'Success']);
+  }
+
+  public function deleteExam(){
+    $db = db_connect();
+
+    $model = new NewsModel($db);
+
+    $id =  $this->request->getGet('id');
+
+    $model->deleteExam($id);
+
+    return $this->response 
+      ->setStatusCode(200)
+      ->setJson(['message'=>'Success']);
+  }
+
+  public function getExams(){
+    $db = db_connect();
+
+    $model = new NewsModel($db);
+
+    $type =  $this->request->getGet('type');
+
+    $exams = $model->getExams($type);
+
+    return $this->response 
+    ->setStatusCode(200)
+    ->setJson(['exams' =>$exams, 'message'=>'Success']);
+  }
 }

@@ -3,11 +3,11 @@
   <div fxLayout="column" fxLayoutGap="1px">
     <div class="item" *ngFor="let event of events" 
       fxLayout="column" fxLayoutAlign="center center">
-      <div>{{event.title}}</div>
-      <div>{{event.schedule}}</div>
+      <div>{{event.description}}</div>
+      <div class="item-sub">{{event.dtScheduled}}</div>
     </div>
   </div>
-  <div class="ms-2">
+  <!-- <div class="ms-2">
     <app-view-more></app-view-more>
-  </div>
+  </div> -->
 </div>>

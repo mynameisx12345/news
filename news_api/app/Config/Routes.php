@@ -16,7 +16,10 @@ $routes->group('users', function($routes){
 $routes->group('lov', function($routes){
   $routes->get('departments','UsersController::getDepartments');
   $routes->get('template', 'UsersController::getTemplate');
-});;
+  $routes->post('exam','NewsController::addExam');
+  $routes->delete('exam','NewsController::deleteExam');
+  $routes->get('exam','NewsController::getExams');
+});
 
 $routes->group('news', function($routes){
   $routes->post('save','NewsController::saveNews');
@@ -24,3 +27,4 @@ $routes->group('news', function($routes){
   $routes->post('featured','NewsController::setFeatured');
   $routes->get('featured','NewsController::getFeatured');
 });
+

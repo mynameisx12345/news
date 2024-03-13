@@ -231,4 +231,8 @@ isJournalist$ =this.userService.currentUser$.pipe(
     this.router.navigate(['/admin/featured'])
   }
 
+  openExam(){
+    this.router.navigate(['/admin/exam-schedule'])
+  }
+
 }

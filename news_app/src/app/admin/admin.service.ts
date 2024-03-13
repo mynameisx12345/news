@@ -54,6 +54,33 @@ export class AdminService {
     return this.http.post(`${this.apiUrl}/news/featured`,data);
   }
 
+  getExams(type=null){
+    let url = `${this.apiUrl}/lov/exam`;
+    if(type){
+      url += `?type=${type}`;
+    }
+    return this.http.get(url).pipe(
+      map((res:any)=>{
+        return res.exams.map(exam=>{
+          return {
+            id: exam.id,
+            description: exam.description,
+            dtScheduled: exam.dt_scheduled,
+            type: exam.type
+          }
+        })
+      })
+    )
+  }
+
+  deleteExam(id){
+    return this.http.delete(`${this.apiUrl}/lov/exam?id=${id}`);
+  }
+
+  addExam(data){
+    return this.http.post(`${this.apiUrl}/lov/exam`,data);
+  }
+
   
 }
 

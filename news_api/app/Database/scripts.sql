@@ -45,3 +45,11 @@ CREATE TABLE featured(
     date_featured DATE,
     is_active BOOLEAN
 )
+
+//new
+CREATE TABLE exam(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    description VARCHAR(100),
+    dt_scheduled DATE,
+    type VARCHAR(10)
+)
