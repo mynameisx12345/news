@@ -1,8 +1,8 @@
-<div fxLayout="row" class="top-stories pt-3" fxLayoutGap="20px">
+<div fxLayout="row" fxLayout.xs="column" class="top-stories pt-3" fxLayoutGap="20px">
   <div fxFlex="65" fxLayout="column" class="top-most" fxLayoutGap="20px">
     <div class="title" (click)="openNews(featured[0])">{{featured[0].title}}</div>
     <img [src]="featured[0].image" width="100%" height="auto" (click)="openNews(featured[0])">
-    <div>{{featured[0].content}}</div>
+    <div class="justify-content">{{featured[0].content}}</div>
   </div>
   <div fxFlex="35" fxLayoutGap="20px" class="top-old">
     <div fxLayout="column" *ngFor="let mainStory of featured | slice: 1">
