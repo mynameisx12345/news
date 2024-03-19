@@ -33,5 +33,6 @@ $routes->group('news', function($routes){
   $routes->get('like', 'NewsController::getLikes');
   $routes->post('visit', 'NewsController::visit');
   $routes->get('trending', 'NewsController::getTrending');
+  $routes->post('report', 'NewsController::saveReport');
 });
 

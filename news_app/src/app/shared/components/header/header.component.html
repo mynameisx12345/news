@@ -13,21 +13,27 @@
               *ngSwitchCase="false">person_add</mat-icon>
             <span *ngSwitchCase="true">name</span>
           </div> -->
-          <div fxLayout="column" fxLayoutGap="10px">
-            <div fxLayout="row"class="department" fxLayoutAlign="end center" fxLayoutGap="10px">
-             <mat-icon>group</mat-icon> 
-             <span>{{currentDepartment}}</span>
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <div fxLayout="column" fxLayoutGap="10px" fxFlex="80">
+              <div fxLayout="row"class="department" fxLayoutAlign="end center" fxLayoutGap="10px">
+               <mat-icon>group</mat-icon> 
+               <span>{{currentDepartment}}</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+                <!-- <mat-icon class="white-icon" (click)="goToLogin()"
+                  *ngIf="!(isLogged$ | async)">login</mat-icon> -->
+                <span *ngIf="(isLogged$ | async)" class="name">
+                  {{(currentUserName$| async)}}
+                </span>
+                <mat-icon class="white-icon" *ngIf="(isLogged$ | async)"
+                [matMenuTriggerFor]="settingsMenu">account_circle</mat-icon>
+              </div>
             </div>
-            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-              <mat-icon class="white-icon" (click)="goToLogin()"
-                *ngIf="!(isLogged$ | async)">login</mat-icon>
-              <span *ngIf="(isLogged$ | async)" class="name">
-                {{(currentUserName$| async)}}
-              </span>
-              <mat-icon class="white-icon" *ngIf="(isLogged$ | async)"
-              [matMenuTriggerFor]="settingsMenu">account_circle</mat-icon>
+            <div>
+              <img [src]="'data:image/jpg;base64,' + getDeptartmentDet?.logo" height="60px" width="60px">
             </div>
           </div>
+          
           
           
           <!-- <mat-icon class="white-icon">notifications</mat-icon> -->
@@ -41,7 +47,7 @@
               <mat-icon>switch_access_shortcut</mat-icon>
               <span>Switch Department</span>
             </button>
-            <button mat-menu-item (click)="openDashboard()" *ngIf="(isJournalist$ | async)">
+            <button mat-menu-item (click)="openDashboard()" *ngIf="(isJournalist$ | async) || (isAdmin$ | async)">
               <mat-icon>star</mat-icon>
               <span>My News</span>
             </button>
@@ -73,8 +79,12 @@
           <mat-menu #department="matMenu">
             <div *ngIf="(isAdmin$ | async)">
               <button mat-menu-item *ngFor="let dept of departments$ | async" (click)="switchDepartment(dept)">
-                <mat-icon>group</mat-icon>
-                <span>{{dept.name}}</span>
+                <!-- <mat-icon>group</mat-icon> -->
+                <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+                  <img [src]="dept.logo" height="30xp" width="30px">
+                  <span>{{dept.name}}</span>
+                </div>
+                
               </button>
             </div>
             <div *ngIf="(isJournalist$ | async)">

@@ -138,5 +138,9 @@ export class RegisterComponent implements OnInit {
     this.fileToUpload = file.item(0);
     this.registerFg.patchValue({exam: this.fileToUpload});
   }
+
+  backToLogin(){
+    this.router.navigate(['/auth/login']);
+  }
   
 }

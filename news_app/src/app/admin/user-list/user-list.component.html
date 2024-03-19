@@ -68,3 +68,13 @@
   </table>
   <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of requests"></mat-paginator>
 </div>
+
+<ng-template #scoreModal>
+  <div class="score-modal" [formGroup]="scoreFg" fxLayout="column" fxLayoutGap="10px">
+    <mat-form-field>
+      <mat-label>Score</mat-label>
+      <input matInput formControlName="score" type="number">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="currentDialog.close(true)">OK</button>
+  </div>
+</ng-template>

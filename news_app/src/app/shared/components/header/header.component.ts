@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/auth/user.service';
 import { map,tap, switchMap, BehaviorSubject, filter, take, combineLatest, withLatestFrom } from 'rxjs';
 import { LovService } from '../../services/lov.service';
@@ -83,6 +83,7 @@ export class HeaderComponent implements OnInit{
       console.log('dept', dept)
     })
   )
+
 
   journalistDept$ = combineLatest(this.userService.currentUser$, this.lovService.departments$).pipe(
     map(([user, departments])=>{
@@ -174,7 +175,6 @@ isJournalist$ =this.userService.currentUser$.pipe(
 
   ngOnInit(): void {
     this.setLovs();
-
     
   }
 
@@ -188,18 +188,24 @@ isJournalist$ =this.userService.currentUser$.pipe(
     this.router.navigate(['/auth/login']);
   }
 
+  get getDeptartmentDet(){
+    let dept = this.departments?.find((dept=>{
+      return dept.name === this.currentDepartment
+    }))
+    return dept ? dept : {}
+  }
+
   setLovs(){
     this.lovService.getDepartments().pipe(
       tap((departments)=>{
         this.departments = departments
-
+        console.log('departmens', this.departments)
       }),
       switchMap((departments)=>{
         return this.userService.currentDepartment$.pipe(
   
           tap((curDept)=>{
             this.currentDepartment = this.departments.find(dept=>dept.id === curDept)?.name;
-           
           })
         )
       })

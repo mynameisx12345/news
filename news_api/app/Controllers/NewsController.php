@@ -264,5 +264,34 @@ class NewsController extends BaseController
       ->setJson($result);
   }
 
+  public function saveReport(){
+    $db = db_connect();
+
+    $model = new NewsModel($db);
+
+    date_default_timezone_set('Asia/Singapore');
+    $curDate = date('y-m-d');
+
+    $data = [
+      "id" => $this->request->getJSON()->id,
+      "comment_id" => $this->request->getJSON()->commentId,
+      "action" => $this->request->getJSON()->action,
+      "dt_reported" => $curDate
+    ];
+
+   
+
+    $isNew = false;
+
+    if(empty($this->request->getJSON()->id)){
+      $isNew = true;
+    }
+    
+    $reportId = $model->saveReport($data);
+    return $this->response 
+      ->setStatusCode(200)
+      ->setJson(['reportId'=>$reportId, 'message'=>'Success', 'isNew'=> $isNew]);
+  }
+
 
 }

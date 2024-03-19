@@ -31,6 +31,10 @@ class UsersModel{
     $builder = $this->db->table('department');
     $builder->select('*');
     $query = $builder->get()->getResult();
+    foreach($query as $key => $res){
+      $query[$key]->logo = base64_encode($query[$key]->logo);
+     }
+
     return $query;
   }
 

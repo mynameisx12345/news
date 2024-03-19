@@ -7,6 +7,8 @@ import { MatSort } from '@angular/material/sort';
 import { UserService } from 'src/app/auth/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { b64toBlob } from 'src/app/shared/util';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -28,10 +30,17 @@ export class UserListComponent implements OnInit {
     'isApproved',
     'action'
   ]
+
+  scoreFg: any;
+  currentDialog:any;
+  @ViewChild('scoreModal') scoreModal;
+
   constructor(
     private readonly adminService: AdminService,
     private readonly userService: UserService,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: MatSnackBar,
+    private readonly fb: FormBuilder,
+    private readonly dialog: MatDialog
   ){}
 
   dataSource = new MatTableDataSource<any>;
@@ -46,6 +55,10 @@ export class UserListComponent implements OnInit {
         })
       ).subscribe();
     }, 1000);
+
+    this.scoreFg = this.fb.group({
+      score: ['',Validators.required]
+    })
   }
 
   applyFilter(event: Event) {
@@ -58,37 +71,46 @@ export class UserListComponent implements OnInit {
   }
 
   approveUser(element){
-    const formData: any = new FormData();
-    formData.append('email', element.email);
-    formData.append('password', element.password);
-    formData.append('id_number', element.idNumber);
-    formData.append('first_name', element.firstname);
-    formData.append('middle_name', element.middlename);
-    formData.append('last_name', element.lastname);
-    formData.append('suffix', element.suffix);
-    formData.append('department_id', element.department);
-    formData.append('is_approved', 1);
-    formData.append('user_type', element.userType);
-    formData.append('exam', b64toBlob(element.exam));
-    formData.append('id', element.id);
-    formData.append('password', element.password);
-    this.userService.register(formData).pipe(
-      tap((resp)=>{
-        this.snackbar.open(`User is Approved`,'',{
-          duration: 2000,
-          verticalPosition: 'top',
-          panelClass: ['mat-accent']
-        });
-        element.isApproved = 'Yes';
-      }),
-      catchError((error)=>{
-        this.snackbar.open(error.error.message,'',{
-          duration: 2000,
-          verticalPosition: 'top',
-          panelClass: ['mat-warn']
+    this.currentDialog = this.dialog.open(this.scoreModal,{
+      width:'30%'
+    })
+    this.currentDialog.afterClosed().subscribe((ret)=>{
+      if(!ret){
+        return;
+      }
+      const formData: any = new FormData();
+      formData.append('email', element.email);
+      formData.append('password', element.password);
+      formData.append('id_number', element.idNumber);
+      formData.append('first_name', element.firstname);
+      formData.append('middle_name', element.middlename);
+      formData.append('last_name', element.lastname);
+      formData.append('suffix', element.suffix);
+      formData.append('department_id', element.department);
+      formData.append('is_approved', 1);
+      formData.append('user_type', element.userType);
+      formData.append('exam', b64toBlob(element.exam));
+      formData.append('id', element.id);
+      formData.append('password', element.password);
+      this.userService.register(formData).pipe(
+        tap((resp)=>{
+          this.snackbar.open(`User is Approved`,'',{
+            duration: 2000,
+            verticalPosition: 'top',
+            panelClass: ['mat-accent']
+          });
+          element.isApproved = 'Yes';
+        }),
+        catchError((error)=>{
+          this.snackbar.open(error.error.message,'',{
+            duration: 2000,
+            verticalPosition: 'top',
+            panelClass: ['mat-warn']
+          })
+          return of(error);
         })
-        return of(error);
-      })
-    ).subscribe();
+      ).subscribe();
+    })
+    
   }
 }

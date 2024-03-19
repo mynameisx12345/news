@@ -258,4 +258,21 @@ class NewsModel{
     
   }
 
+  function saveReport($data){
+    if(empty($data['id'])){
+      $this->db->table('report')
+        ->insert($data);
+
+      $reportId = $this->db->insertID();
+      return $reportId;
+    } else {
+      $builder = $this->db->table('report');
+      $builder->where('id', $data['id']);
+      $builder->update($data);
+      return $data['id'];
+    }
+  }
+
+  
+
 }

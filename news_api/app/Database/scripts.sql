@@ -81,3 +81,20 @@ CREATE TABLE visits (
     FOREIGN KEY (news_id) REFERENCES news(id),
     dt_visited DATE
 )
+
+-- ALTER TABLE users
+-- ADD COLUMN SCORE VARCHAR(5)
+
+ALTER TABLE department
+ADD COLUMN description VARCHAR(100)
+
+ALTER TABLE department
+ADD COLUMN logo LONGBLOB
+
+CREATE TABLE report (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    comment_id INT,
+    FOREIGN KEY (comment_id) REFERENCES comment(id),
+    dt_reported DATE,
+    action VARCHAR(30)
+)

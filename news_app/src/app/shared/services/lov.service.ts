@@ -24,7 +24,14 @@ export class LovService {
   getDepartments(){
     return this.http.get(`${this.apiUrl}/lov/departments`).pipe(
       tap((resp:any)=>{
-        this.setDepartments(resp);
+        let newResp = resp.map((res)=>{
+          return {
+            ...res,
+            logo: res.logo ? this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${res.logo}`):
+              res.logo
+          }
+        })
+        this.setDepartments(newResp);
       })
     )
   }

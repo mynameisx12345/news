@@ -27,7 +27,11 @@
     <mat-label>Department</mat-label>
     <mat-select formControlName="department">
       <mat-option *ngFor="let department of departments$ | async" [value]="department.id">
-        {{department.name}}
+        <div fxLayout="column">
+          <span>{{department.name}} - </span>
+          <span class="dropdown-desc">{{department.description}}</span>
+        </div>
+        
       </mat-option>
     </mat-select>
   </mat-form-field>
